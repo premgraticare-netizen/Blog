@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Admin Posts - AI Blog CMS{% endblock %}
+{% block content %}
+<h1 class="mb-4">Admin Posts</h1>
+<div class="card shadow-sm">
+  <div class="card-body">
+    <table class="table table-striped">
+      <thead><tr><th>Title</th><th>Status</th><th>Author</th></tr></thead>
+      <tbody>
+        {% for post in posts %}
+        <tr><td>{{ post.title }}</td><td>{{ post.status }}</td><td>{{ post.author.username }}</td></tr>
+        {% else %}
+        <tr><td colspan="3">No posts yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

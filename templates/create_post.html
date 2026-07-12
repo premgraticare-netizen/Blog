@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% block title %}Create Post - AI Blog CMS{% endblock %}
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h1 class="mb-4">Create Post</h1>
+    <form method="post" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label class="form-label">Title</label>
+        <input type="text" class="form-control" name="title" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Slug</label>
+        <input type="text" class="form-control" name="slug">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Excerpt</label>
+        <textarea class="form-control" name="excerpt" rows="3"></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Content</label>
+        <textarea class="form-control" name="content" rows="8" required></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Status</label>
+        <select class="form-select" name="status">
+          <option value="draft">Draft</option>
+          <option value="published">Publish</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Featured Image</label>
+        <input type="file" class="form-control" name="featured_image">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Meta Title</label>
+        <input type="text" class="form-control" name="meta_title">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Meta Description</label>
+        <input type="text" class="form-control" name="meta_description">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Meta Keywords</label>
+        <input type="text" class="form-control" name="meta_keywords">
+      </div>
+      <button type="submit" class="btn btn-primary">Save Post</button>
+    </form>
+
+    <div class="card mt-4 border-primary">
+      <div class="card-body">
+        <h5 class="card-title">AI Helpers</h5>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">SEO Title Prompt</label>
+            <input type="text" class="form-control" id="aiTitlePrompt" placeholder="e.g. AI tools for writers">
+            <button type="button" class="btn btn-outline-primary mt-2" onclick="generateTitle()">Generate Title</button>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Meta Description Prompt</label>
+            <input type="text" class="form-control" id="aiMetaPrompt" placeholder="e.g. guide to AI blogging">
+            <button type="button" class="btn btn-outline-secondary mt-2" onclick="generateMetaDescription()">Generate Meta</button>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Grammar Correction</label>
+            <textarea class="form-control" id="aiGrammarText" rows="3" placeholder="Paste text to improve..."></textarea>
+            <button type="button" class="btn btn-outline-success mt-2" onclick="correctGrammar()">Correct Grammar</button>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Summary</label>
+            <textarea class="form-control" id="aiSummaryText" rows="3" placeholder="Paste article text..."></textarea>
+            <button type="button" class="btn btn-outline-dark mt-2" onclick="generateSummary()">Generate Summary</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function submitAi(url, data, targetField) {
+  fetch(url, {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: new URLSearchParams(data)})
+    .then(response => response.json())
+    .then(result => {
+      if (targetField === 'meta_description') {
+        document.querySelector('input[name="meta_description"]').value = result.meta_description || '';
+      } else if (targetField === 'title') {
+        document.querySelector('input[name="meta_title"]').value = result.title || '';
+      } else if (targetField === 'grammar') {
+        document.querySelector('textarea[name="content"]').value = result.corrected_text || '';
+      } else if (targetField === 'summary') {
+        document.querySelector('textarea[name="excerpt"]').value = result.summary || '';
+      }
+    });
+}
+function generateTitle() {
+  submitAi('/ai/title', {prompt: document.getElementById('aiTitlePrompt').value}, 'title');
+}
+function generateMetaDescription() {
+  submitAi('/ai/meta-description', {prompt: document.getElementById('aiMetaPrompt').value}, 'meta_description');
+}
+function correctGrammar() {
+  submitAi('/ai/grammar', {text: document.getElementById('aiGrammarText').value}, 'grammar');
+}
+function generateSummary() {
+  submitAi('/ai/summary', {text: document.getElementById('aiSummaryText').value}, 'summary');
+}
+</script>
+{% endblock %}

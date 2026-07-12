@@ -1,0 +1,32 @@
+body {
+    background: #f8fafc;
+    color: #0f172a;
+}
+
+.site-header {
+    background: linear-gradient(135deg, #0f172a, #1d4ed8) !important;
+    box-shadow: 0 6px 24px rgba(15, 23, 42, 0.15);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.site-footer {
+    background: #0f172a !important;
+    color: #e2e8f0;
+    display: block;
+    margin-top: 3rem;
+}
+
+.card {
+    border: 0;
+    border-radius: 1rem;
+}
+
+.btn {
+    border-radius: 999px;
+}
+
+article {
+    line-height: 1.8;
+    font-size: 1.05rem;
+}
